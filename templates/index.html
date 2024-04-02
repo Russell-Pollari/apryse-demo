@@ -1,0 +1,56 @@
+<html>
+<head>
+  <title>Basic WebViewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</head>
+<script src='webviewer/lib/webviewer.min.js'></script>
+<body>
+  <div id='viewer' style='width: 100%ß; height: 600px; margin: 0 auto;'></div>
+  <button id="export annotations">Export annotations</button>
+  <button id="Generate PDF">Generate PDF</button>
+<script>
+  WebViewer.WebComponent({
+    path: 'webviewer/lib',
+    licenseKey: "{{ licenseKey }}"
+  }, document.getElementById('viewer'))
+  .then(instance => {
+    const { documentViewer, annotationManager } = instance.Core;
+
+    // Load image
+    const url = 'test_img.jpeg'
+    const img = new Image();
+    img.onload = function() {
+      documentViewer.loadDocument(url, {
+        pageSizes: [{ width: img.width, height: img.height }],
+      });
+    }
+    img.src = url;
+
+    document.getElementById('export annotations').addEventListener('click', async () => {
+        const xfdfString = await annotationManager.exportAnnotations();
+
+        fetch('/export', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({xfdfString})
+        }).then(() => {
+          alert('Annotations saved')
+        }).catch((err) => {
+          alert(err)
+        });
+
+    });
+  });
+
+  document.getElementById('Generate PDF').addEventListener('click', async () => {
+    fetch('/generate', {
+      method: 'POST',
+    }).then(() => alert('PDF generated')).catch((err) => {
+      alert(err)
+    });
+  });
+</script>
+</body>
+</html>

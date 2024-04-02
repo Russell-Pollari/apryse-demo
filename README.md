@@ -1,11 +1,19 @@
-## Apryse PDF issue
+## Apryse PDF generator
+
+Minimum working example for testing Apryse PDF generation with annotations on client and server.
 
 ## The issue
 
 Downloading the PDF (with annotations) from the webviewer and generating a PDF with the Python SDK produce different outputs.
 
+- This may only be an issue on MacOS...
+
 
 ## Setup
+
+0. Initialise a virtual environment
+
+`python3 -m venv venv && source venv/bin/activate`
 
 1. Install python requirements
 

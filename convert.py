@@ -43,9 +43,9 @@ def convert_to_pdf_streaming(pdf: PDFDoc, image_path: str) -> PDFDoc:
     print(f"Image size: {width}x{height} at {dpi} DPI")
 
     options: dict = {
-        "DPI": dpi,
-        "RemovePadding": True,
-        "PageSizes": [width, height],
+        # "DPI": dpi,
+        # "RemovePadding": True,
+        # "PageSizes": [width, height],
         "DefaultPageSize": [width, height],
     }
     print(f"Conversion options: {options}")

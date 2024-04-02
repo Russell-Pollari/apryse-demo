@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 from dotenv import load_dotenv
 
 from convert import create_pdf_with_annotations
@@ -29,11 +29,16 @@ def export_annotations():
 def generate_pdf():
     create_pdf_with_annotations(
         image_path="test_img.jpeg",
-        save_as="test_pdf.pdf",
+        save_as="output.pdf",
         annotations_path="annotations.xml",
         use_streaming=True,
     )
     return "OK"
+
+
+@app.route("/output.pdf", methods=["GET"])
+def get_pdf():
+    return send_from_directory("", "output.pdf")
 
 
 if __name__ == "__main__":

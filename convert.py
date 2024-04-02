@@ -21,7 +21,7 @@ PDFNet.Initialize(os.getenv("LICENSE"))
 
 def create_pdf_with_annotations(
     image_path: str = "static/test_img.jpeg",
-    save_as: str = "test_pdf.pdf",
+    save_as: str = "output.pdf",
     annotations_path: str = "test_annotation.xml",
     use_streaming: bool = True,
 ):

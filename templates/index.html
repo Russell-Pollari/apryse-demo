@@ -6,8 +6,9 @@
 <script src='webviewer/lib/webviewer.min.js'></script>
 <body>
   <div id='viewer' style='width: 100%ß; height: 600px; margin: 0 auto;'></div>
-  <button id="export annotations">Export annotations</button>
-  <button id="Generate PDF">Generate PDF</button>
+  <button id="export_annotations">Export Annotations</button>
+  <button id="generate">Generate PDF</button>
+  <a href="/output.pdf" download="output.pdf" id="download-pdf">Download PDF</a>
 <script>
   WebViewer.WebComponent({
     path: 'webviewer/lib',
@@ -15,6 +16,11 @@
   }, document.getElementById('viewer'))
   .then(instance => {
     const { documentViewer, annotationManager } = instance.Core;
+
+    documentViewer.addEventListener('documentLoaded', async () => {
+      const annotations = await fetch('./annotations.xml').then(res => res.text());
+      await annotationManager.importAnnotations(annotations);
+    });
 
     // Load image
     const url = 'test_img.jpeg'
@@ -26,7 +32,8 @@
     }
     img.src = url;
 
-    document.getElementById('export annotations').addEventListener('click', async () => {
+
+    document.getElementById('export_annotations').addEventListener('click', async () => {
         const xfdfString = await annotationManager.exportAnnotations();
 
         fetch('/export', {
@@ -44,13 +51,14 @@
     });
   });
 
-  document.getElementById('Generate PDF').addEventListener('click', async () => {
+  document.getElementById('generate').addEventListener('click', async () => {
     fetch('/generate', {
       method: 'POST',
     }).then(() => alert('PDF generated')).catch((err) => {
       alert(err)
     });
   });
+
 </script>
 </body>
 </html>

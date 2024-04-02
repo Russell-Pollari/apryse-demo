@@ -19,9 +19,14 @@ Downloading the PDF (with annotations) from the webviewer and generating a PDF w
 
 `python server.py`
 
+OR in docker container
+
+`docker build -t pdf-test . && docker run -p 8000:8000 pdf-test`
+
+
 ## Usage
 
-1. Open browser to `http://127.0.0.1:5000/` to interact with Apryse webviwer.
+1. Open browser to `http://127.0.0.1:8000/` to interact with Apryse webviwer.
 This loads and displays`./test_img.jpeg`
 
 2. Add some annotations and click `Export Annotations`.
@@ -33,6 +38,7 @@ This will convert `./test_img.jpeg` and add `./annotations.xml` using the Apryse
 4. Click Download PDF to view the generated pdf
 
 
+
 ## Directory structure
 
 ```
@@ -41,6 +47,7 @@ This will convert `./test_img.jpeg` and add `./annotations.xml` using the Apryse
 ├── .gitignore
 ├── annotations.xml   # Exported annotations
 ├── convert.py        # Logic to convert image to PDF with annotations
+├── Dockerfile
 ├── output.pdf        # Generated PDF
 ├── README.md
 ├── requirements.txt

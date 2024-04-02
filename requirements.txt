@@ -1,3 +1,4 @@
+--extra-index-url https://pypi.apryse.com
 apryse-sdk==10.8.0
 blinker==1.7.0
 click==8.1.7

@@ -6,10 +6,12 @@
 <script src='webviewer/lib/webviewer.min.js'></script>
 <body>
   <div id='viewer' style='width: 100%ß; height: 600px; margin: 0 auto;'></div>
+  <button id="save-image">Save Image</button>
   <button id="export_annotations">Export Annotations</button>
   <button id="generate">Generate PDF</button>
   <a href="/output.pdf" download="output.pdf" id="download-pdf">Download PDF</a>
 <script>
+
   WebViewer.WebComponent({
     path: 'webviewer/lib',
     licenseKey: "{{ licenseKey }}"
@@ -31,6 +33,45 @@
       });
     }
     img.src = url;
+
+
+    document.getElementById('save-image').addEventListener('click', async () => {
+
+      const doc = documentViewer.getDocument();
+      doc.loadCanvas({
+        pageNumber: 1,
+        drawComplete: async (canvas) => {
+          // Expect a canvas element, but this is an Image element
+          // https://docs.apryse.com/api/web/Core.Document.html#loadCanvas__anchor
+          console.log('canvas', canvas);
+
+          const ctx = canvas.getContext('2d');
+          annotationManager.setAnnotationCanvasTransform(ctx);
+          await annotationManager.drawAnnotations({
+            pageNumber: 1,
+            overrideCanvas: canvas,
+          });
+
+          const dataUrl = canvas.toDataURL();
+          console.log('dataUrl', dataUrl);
+        },
+      });
+
+      // // This works:
+      // const canvas = document.createElement('canvas');
+      // canvas.width = img.width;
+      // canvas.height = img.height;
+      // const ctx = canvas.getContext('2d');
+      // ctx.drawImage(img, 0, 0);
+      // annotationManager.setAnnotationCanvasTransform(ctx);
+      // await annotationManager.drawAnnotations({
+      //   pageNumber: 1,
+      //   overrideCanvas: canvas,
+      // });
+      // const dataUrl = canvas.toDataURL();
+      // console.log('dataUrl', dataUrl);
+
+    });
 
 
     document.getElementById('export_annotations').addEventListener('click', async () => {

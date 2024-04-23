@@ -50,21 +50,6 @@
           annotationManager.setAnnotationCanvasTransform(thumbnail.getContext('2d'), zoom, corePageRotation);
           await instance.Core.documentViewer.getAnnotationManager().drawAnnotations(pageNumber, thumbnail);
           console.log(thumbnail);
-
-          // // This works:
-          // const canvas = document.createElement('canvas');
-          // canvas.width = img.width;
-          // canvas.height = img.height;
-            // const ctx = canvas.getContext('2d');
-            // ctx.drawImage(img, 0, 0);
-            // annotationManager.setAnnotationCanvasTransform(ctx);
-            // await annotationManager.drawAnnotations({
-            //   pageNumber: 1,
-            //   overrideCanvas: canvas,
-            // });
-            // const dataUrl = canvas.toDataURL();
-            // console.log('dataUrl', dataUrl);
-          // });
         },
       });
     });

@@ -2,11 +2,10 @@
 
 Minimum working example for testing Apryse PDF generation with annotations on client and server.
 
-## The issue
+## The issue(s)
 
-Downloading the PDF (with annotations) from the webviewer and generating a PDF with the Python SDK produce different outputs.
-
-- This may only be an issue on MacOS...
+- document.loadCanvas does not return a canvas
+- On MacOS, downloading the PDF (with annotations) from the webviewer and generating a PDF with the Python SDK produce different outputs.
 
 
 ## Setup

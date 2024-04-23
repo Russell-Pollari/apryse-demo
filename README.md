@@ -13,26 +13,35 @@ Downloading the PDF (with annotations) from the webviewer and generating a PDF w
 
 0. Initialise a virtual environment
 
-`python3 -m venv venv && source venv/bin/activate`
+    `python3 -m venv venv && source venv/bin/activate`
 
 1. Install python requirements
 
-`pip install -r requirements.txt`
+    `pip install -r requirements.txt`
 
 2. Create env variable with apryse license
 
-`touch .env && echo "LICENSE=<key>" >> .env`
+    `touch .env && echo "LICENSE=<key>" >> .env`
 
 3. Run flask application
 
-`python server.py`
+    `python server.py`
 
-OR in docker container
+    OR in docker container
 
-`docker build -t pdf-test . && docker run -p 8000:8000 pdf-test`
+    `docker build -t pdf-test . && docker run -p 8000:8000 pdf-test`
 
 
-## Usage
+## Create new image with annotations applied
+
+1. Open browser to `http://127.0.0.1:8000/` to interact with Apryse webviwer.
+This loads and displays`./test_img.jpeg`
+
+2. Click `Save Image`
+> NB: This is currently broken. See browser console for error
+
+
+## Generate PDF with annotations on server
 
 1. Open browser to `http://127.0.0.1:8000/` to interact with Apryse webviwer.
 This loads and displays`./test_img.jpeg`
@@ -44,7 +53,6 @@ This will save the xfdf sting of the annotations to `./annotations.xml`
 This will convert `./test_img.jpeg` and add `./annotations.xml` using the Apryse Python SDKs. Result is saved in `output.pdf`
 
 4. Click Download PDF to view the generated pdf
-
 
 
 ## Directory structure

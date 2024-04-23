@@ -22,10 +22,12 @@
     documentViewer.addEventListener('documentLoaded', async () => {
       const annotations = await fetch('./annotations.xml').then(res => res.text());
       await annotationManager.importAnnotations(annotations);
+
     });
 
     // Load image
     const url = 'test_img.jpeg'
+    console.log('url', url);
     const img = new Image();
     img.onload = function() {
       documentViewer.loadDocument(url, {
@@ -34,43 +36,37 @@
     }
     img.src = url;
 
-
     document.getElementById('save-image').addEventListener('click', async () => {
-
+      const pageNumber = 1;
       const doc = documentViewer.getDocument();
       doc.loadCanvas({
-        pageNumber: 1,
-        drawComplete: async (canvas) => {
+        pageNumber,
+        drawComplete: async (thumbnail) => {
           // Expect a canvas element, but this is an Image element
           // https://docs.apryse.com/api/web/Core.Document.html#loadCanvas__anchor
-          console.log('canvas', canvas);
+          console.log('canvas?', thumbnail); // canvas <img .... />
+          const corePageRotation = (doc.getPageRotation(pageNumber) / 90) % 4;
+          // thumbnail.getContext will throw an error
+          annotationManager.setAnnotationCanvasTransform(thumbnail.getContext('2d'), zoom, corePageRotation);
+          await instance.Core.documentViewer.getAnnotationManager().drawAnnotations(pageNumber, thumbnail);
+          console.log(thumbnail);
 
-          const ctx = canvas.getContext('2d');
-          annotationManager.setAnnotationCanvasTransform(ctx);
-          await annotationManager.drawAnnotations({
-            pageNumber: 1,
-            overrideCanvas: canvas,
-          });
-
-          const dataUrl = canvas.toDataURL();
-          console.log('dataUrl', dataUrl);
+          // // This works:
+          // const canvas = document.createElement('canvas');
+          // canvas.width = img.width;
+          // canvas.height = img.height;
+            // const ctx = canvas.getContext('2d');
+            // ctx.drawImage(img, 0, 0);
+            // annotationManager.setAnnotationCanvasTransform(ctx);
+            // await annotationManager.drawAnnotations({
+            //   pageNumber: 1,
+            //   overrideCanvas: canvas,
+            // });
+            // const dataUrl = canvas.toDataURL();
+            // console.log('dataUrl', dataUrl);
+          // });
         },
       });
-
-      // // This works:
-      // const canvas = document.createElement('canvas');
-      // canvas.width = img.width;
-      // canvas.height = img.height;
-      // const ctx = canvas.getContext('2d');
-      // ctx.drawImage(img, 0, 0);
-      // annotationManager.setAnnotationCanvasTransform(ctx);
-      // await annotationManager.drawAnnotations({
-      //   pageNumber: 1,
-      //   overrideCanvas: canvas,
-      // });
-      // const dataUrl = canvas.toDataURL();
-      // console.log('dataUrl', dataUrl);
-
     });
 
 
